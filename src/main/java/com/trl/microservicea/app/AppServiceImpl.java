@@ -18,6 +18,18 @@ public class AppServiceImpl implements AppService {
     @Value("${spring.application.name}")
     private String appName;
 
+    @Value("${microserviceB.url.getInfo}")
+    private String microserviceB_URL_GetInfo;
+
+    @Value("${microserviceC.url.getInfo}")
+    private String microserviceC_URL_GetInfo;
+
+    @Value("${microserviceD.url.getInfo}")
+    private String microserviceD_URL_GetInfo;
+
+    @Value("${microserviceE.url.getInfo}")
+    private String microserviceE_URL_GetInfo;
+
     public AppServiceImpl(@Lazy @Qualifier("eurekaClient") EurekaClient eurekaClient, RestTemplate restTemplate) {
         this.eurekaClient = eurekaClient;
         this.restTemplate = restTemplate;
@@ -27,22 +39,15 @@ public class AppServiceImpl implements AppService {
     public String checkConnectionBetweenMicroservices() {
         StringBuilder result = new StringBuilder();
 
-        String fromMicroserviceA = getInfo();
-        String fromMicroserviceB = restTemplate.getForObject("http://MICROSERVICE-B/app/getInfo", String.class);
-        String fromMicroserviceC = restTemplate.getForObject("http://MICROSERVICE-C/app/getInfo", String.class);
-        String fromMicroserviceD = restTemplate.getForObject("http://MICROSERVICE-D/app/getInfo", String.class);
-        String fromMicroserviceE = restTemplate.getForObject("http://MICROSERVICE-E/app/getInfo", String.class);
-
-
-        result.append(fromMicroserviceA);
+        result.append(getInfo());
         result.append("\n");
-        result.append(fromMicroserviceB);
+        result.append(restTemplate.getForObject(microserviceB_URL_GetInfo, String.class));
         result.append("\n");
-        result.append(fromMicroserviceC);
+        result.append(restTemplate.getForObject(microserviceC_URL_GetInfo, String.class));
         result.append("\n");
-        result.append(fromMicroserviceD);
+        result.append(restTemplate.getForObject(microserviceD_URL_GetInfo, String.class));
         result.append("\n");
-        result.append(fromMicroserviceE);
+        result.append(restTemplate.getForObject(microserviceE_URL_GetInfo, String.class));
 
         return result.toString();
     }
