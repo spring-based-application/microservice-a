@@ -35,6 +35,16 @@ public class AppController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @GetMapping(
+            path = "/callNonExistentMicroservice",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> callNonExistentMicroservice () {
+
+        String result = appService.callNonExistentMicroservice();
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)

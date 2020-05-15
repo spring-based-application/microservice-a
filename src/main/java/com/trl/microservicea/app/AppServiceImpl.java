@@ -2,6 +2,7 @@ package com.trl.microservicea.app;
 
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -53,4 +54,23 @@ public class AppServiceImpl implements AppService {
         return String.format("(microservice-a)(GetInfo)(Application name: '%s')(Host: '%s')(Port: '%s')",
                 instanceInfo.getAppName(), instanceInfo.getHostName(), instanceInfo.getPort());
     }
+
+    @HystrixCommand(fallbackMethod = "callNonExistentMicroserviceFallback")
+    @Override
+    public String callNonExistentMicroservice() {
+        StringBuilder result = new StringBuilder();
+
+
+        String fromUnknownMicroservice = restTemplate.getForObject("http://UnknownMicroservice/app/getInfo", String.class);
+
+        result.append(fromUnknownMicroservice);
+
+        return result.toString();
+    }
+
+    public String callNonExistentMicroserviceFallback() {
+
+        return "Fallback Method is here!!!";
+    }
 }
+
