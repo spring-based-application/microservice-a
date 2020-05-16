@@ -4,7 +4,5 @@ public interface AppService {
 
     String checkConnectionBetweenMicroservices ();
 
-    String getInfo();
-
-    String callNonExistentMicroservice();
+    String checkFullback();
 }

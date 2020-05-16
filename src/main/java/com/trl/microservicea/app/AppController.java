@@ -1,5 +1,7 @@
 package com.trl.microservicea.app;
 
+import com.trl.microservicea.appInfo.AppInfoService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 public class AppController {
 
     private final AppService appService;
+    private final AppInfoService appInfoService;
 
-    public AppController(AppService appService) {
+    public AppController(AppService appService, AppInfoService appInfoService) {
         this.appService = appService;
+        this.appInfoService = appInfoService;
     }
 
     @GetMapping(
@@ -20,7 +24,7 @@ public class AppController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getInfo() {
 
-        String result = appService.getInfo();
+        String result = appInfoService.getInfo();
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
@@ -36,11 +40,11 @@ public class AppController {
     }
 
     @GetMapping(
-            path = "/callNonExistentMicroservice",
+            path = "/checkFullback",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> callNonExistentMicroservice () {
+    public ResponseEntity<String> checkFullback() {
 
-        String result = appService.callNonExistentMicroservice();
+        String result = appService.checkFullback();
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
